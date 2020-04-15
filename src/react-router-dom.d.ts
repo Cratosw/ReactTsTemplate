@@ -3,72 +3,78 @@
 
 declare module 'react-router-dom' {
   export {
-    generatePath,
-    Prompt,
+    // components
     MemoryRouter,
-    RedirectProps,
+    Navigate,
+    Outlet,
     Redirect,
-    RouteChildrenProps,
-    RouteComponentProps,
-    RouteProps,
     Route,
     Router,
-    StaticRouter,
-    RoutesProps,
     Routes,
-    match,
-    matchPath,
-    withRouter,
-    RouterChildContext,
-    useHistory,
+    // hooks
+    useBlocker,
+    useHref,
     useLocation,
+    useMatch,
+    useNavigate,
+    useOutlet,
     useParams,
-    useRouteMatch,
+    useResolvedLocation,
+    useRoutes,
+    // utils
+    createRoutesFromChildren,
+    matchRoutes,
+    resolveLocation,
+    generatePath
   } from 'react-router';
 
   export interface BrowserRouterProps {
-    basename?: string;
-    getUserConfirmation?: ((message: string, callback: (ok: boolean) => void) => void);
-    forceRefresh?: boolean;
-    keyLength?: number;
+    timeout?: number;
+    window?: Window;
   }
-  export class BrowserRouter extends React.Component<BrowserRouterProps, any> {}
+
+  export class BrowserRouter extends React.Component<BrowserRouterProps, any> {
+  }
 
   export interface HashRouterProps {
-    basename?: string;
-    getUserConfirmation?: ((message: string, callback: (ok: boolean) => void) => void);
-    hashType?: 'slash' | 'noslash' | 'hashbang';
+    timeout?: number;
+    window?: Window;
   }
-  export class HashRouter extends React.Component<HashRouterProps, any> {}
 
-  export interface LinkProps<S = H.LocationState> extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
-    component?: React.ComponentType<any>;
-    to: H.LocationDescriptor<S> | ((location: H.Location<S>) => H.LocationDescriptor<S>);
+  export class HashRouter extends React.Component<HashRouterProps, any> {
+  }
+
+  export interface LinkProps {
+    as?: React.ElementType;
+    onClick?(event: React.SyntheticEvent): void;
     replace?: boolean;
-    innerRef?: React.Ref<HTMLAnchorElement>;
+    state?: object;
+    target?: string;
+    to: History.LocationDescriptor;
   }
-  export class Link<S = H.LocationState> extends React.Component<
-  LinkProps<S>,
-  any
-  > {}
 
-  export interface NavLinkProps<S = H.LocationState> extends LinkProps<S> {
-  activeClassName?: string;
-  activeStyle?: React.CSSProperties;
-  exact?: boolean;
-  strict?: boolean;
-  isActive?<Params extends { [K in keyof Params]?: string }>(
-    match: match<Params>,
-    location: H.Location<S>,
-  ): boolean;
-  location?: H.Location<S>;
+  export class Link extends React.Component<LinkProps, any> {
   }
-  export class NavLink<S = H.LocationState> extends React.Component<
-  NavLinkProps<S>,
-  any
-  > {}
-  export function usePrompt<any>(
-    message: string | ((location: H.Location) => string | boolean),
-    when?: boolean
-  );
+
+  export interface NavLinkProps extends LinkProps {
+    'aria-current'?: 'page' | 'step' | 'location' | 'date' | 'time' | 'true';
+    activeClassName?: string;
+    activeStyle?: object;
+    className?: string;
+    style?: object;
+    to: History.LocationDescriptor;
+  }
+
+  export class NavLink extends React.Component<NavLinkProps, any> {
+  }
+
+  export interface PromptProps {
+    message?: string;
+    when?: boolean;
+  }
+
+  export class Prompt extends React.Component<PromptProps, any> {
+  }
+
+  export function usePrompt(message: string, when?: boolean): void;
 }

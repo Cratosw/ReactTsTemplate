@@ -2,14 +2,10 @@ import React from 'react';
 import './App.css';
 import clsx from 'clsx';
 import {lazyImport} from './libs/util';
-import {Routes,Route,Link,useParams,
-  // utils
-} from 'react-router-dom';
+import {Routes,Route,Link,useParams} from 'react-router-dom';
 import { useTheme, makeStyles } from "@material-ui/styles";
 const Route1=lazyImport('pages/Route1');
 const Route2=lazyImport('pages/Route2');
-
-
 
 const useStyles = makeStyles((theme) => {
   return {
@@ -35,7 +31,7 @@ function App() {
   );
 }
 function Profile() {
-  let { id } = useParams();
+  let params = useParams();
   return (
     <div>
       <nav>
