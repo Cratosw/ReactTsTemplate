@@ -32,6 +32,7 @@ function App() {
 }
 function Profile() {
   let params = useParams();
+  console.log(params);
   return (
     <div>
       <nav>
