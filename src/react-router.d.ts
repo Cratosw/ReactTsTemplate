@@ -49,7 +49,7 @@ declare module 'react-router' {
   }
 
   export interface RouterProps {
-    history?: History;
+    history?: History.History;
     timeout?: number;
   }
 

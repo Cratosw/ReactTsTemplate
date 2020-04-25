@@ -1,4 +1,8 @@
-const {override,fixBabelImports,addLessLoader,addWebpackAlias,addBabelPlugins,addWebpackPlugin,useBabelRc,disableChunk,adjustWorkbox,setWebpackPublicPath,addBundleVisualizer,disableEsLint,babelInclude,babelExclude,addDecoratorsLegacy,addWebpackExternals,addExternalBabelPlugins} = require('customize-cra')
+const {override,fixBabelImports,addLessLoader,addWebpackAlias,
+  addBabelPlugins,addWebpackPlugin,useBabelRc,
+  disableChunk,adjustWorkbox,setWebpackPublicPath,
+  addBundleVisualizer,disableEsLint,babelInclude,babelExclude,
+  addDecoratorsLegacy,addWebpackExternals,addExternalBabelPlugins} = require('customize-cra')
 const path = require('path')
 const paths = require('react-scripts/config/paths')
 const rewireReactHotLoader = require('react-app-rewire-hot-loader')
@@ -12,6 +16,7 @@ const ProgressBarPlugin = require('progress-bar-webpack-plugin')
 const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
 const Dashboard = require('webpack-dashboard')
 const DashboardPlugin = require('webpack-dashboard/plugin')
+const AntDesignThemePlugin = require('antd-theme-webpack-plugin');
 const dashboard = new Dashboard()
 /**
  * 生产环境是否打包 Source Map 两种方法
@@ -22,6 +27,26 @@ const rewiredMap = () => config => {
   return config
 }
 process.env.PORT = 3006
+
+const options = {
+  stylesDir: path.join(__dirname, './src/less'),
+  antDir: path.join(__dirname, './node_modules/antd'),
+  varFile: path.join(__dirname, './src/less/vars.less'),
+  mainLessFile: path.join(__dirname, './src/less/main.less'),
+  themeVariables: [
+    '@primary-color',
+    '@secondary-color',
+    '@text-color',
+    '@text-color-secondary',
+    '@heading-color',
+    '@layout-body-background',
+    '@btn-primary-bg',
+    '@layout-header-background',
+    '@border-color-base'
+  ],
+  indexFileName: 'index.html',
+  generateOnce: false // generate color.less on each compilation
+}
 
 // path
 const resolveAlias = dir => path.join(__dirname, '.', dir)
@@ -203,7 +228,8 @@ module.exports = {
       new ProgressBarPlugin(),
       delConflictingOrder(),
       addMiniCssExtractPlugin(),
-      new AntdDayjsWebpackPlugin()
+      new AntdDayjsWebpackPlugin(),
+      new AntDesignThemePlugin(options)
     ),
 
     adjustWorkbox(wb =>
